@@ -1,0 +1,8 @@
+Package: mattsUtils
+Title: Personal Utility Functions For Various Analysis
+Version: 0.0.0.9000
+Authors@R: person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+Description: This is a collection of miscellaneous utility functions that are used in a variety of different analysis that I do.
+Depends: R (>= 3.1.2)
+License: No license - personal use
+LazyData: true
