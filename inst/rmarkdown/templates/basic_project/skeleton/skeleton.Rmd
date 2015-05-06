@@ -1,0 +1,38 @@
+---
+title: "Title here"
+author: "Matthew Workentine"
+date: "today's date"
+output:
+  html_document:
+    highlight: pygments
+    theme: cosmo
+    toc: yes
+  pdf_document:
+    toc: yes
+---
+
+Last updated on: `r date()`
+
+## Startup
+```{r options, message=FALSE, echo=FALSE}
+library(knitr)
+opts_chunk$set(warning=FALSE, message = FALSE)
+```
+```{r libraries, echo=FALSE}
+setwd("~/Documents/Projects/")
+library(mattsUtils)
+library(pander)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(wesanderson)
+library(magrittr)
+```
+
+
+## Project Overview
+Add a description here
+
+
+

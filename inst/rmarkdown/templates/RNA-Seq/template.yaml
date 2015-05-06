@@ -1,0 +1,4 @@
+name: RNA-Seq
+description: >
+  Template for a standard RNA-Seq project
+create_dir: false

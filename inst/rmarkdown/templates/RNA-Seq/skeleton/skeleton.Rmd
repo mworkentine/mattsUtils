@@ -1,0 +1,56 @@
+---
+title: "Title here"
+author: "Matthew Workentine"
+date: "today's date"
+output:
+  html_document:
+    highlight: pygments
+    theme: cosmo
+    toc: yes
+  pdf_document:
+    toc: yes
+---
+
+Last updated on: `r date()`
+
+## Startup
+```{r options, message=FALSE, echo=FALSE}
+library(knitr)
+opts_chunk$set(warning=FALSE, message = FALSE, cache=TRUE)
+```
+```{r libraries, echo=FALSE}
+setwd("~/Documents/Projects/")
+library("DESeq2")
+library("pander")
+library("ggplot2")
+library("dplyr")
+library("tidyr")
+library("stringr")
+library("pheatmap")
+library("wesanderson")
+library("magrittr")
+library("GenomicRanges")
+library("rtracklayer")
+library("Biostrings")
+library("Rsamtools")
+library("ShortRead")
+library("mattsUtils")
+library("hwriter")
+```
+
+
+## Project Overview
+Add a description here
+
+## Data load
+
+## Read Mapping
+
+## QC
+
+## Differential Expression
+
+
+
+
+

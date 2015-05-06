@@ -13,7 +13,6 @@
 
 create_gene_list = function(results, db=NULL, cutoff = 0.05, ncbi_link=FALSE){
 
-  require(hwriter)
 
   stopifnot(inherits( results, "DESeqResults" ))
   if(!is.null(db)){
@@ -82,7 +81,6 @@ plotGenes = function(geneList, dds, intgroup, db, title = NULL, plotType = c("bo
 
   plotType = match.arg(plotType)
 
-  require(ggplot2)
 
   # generate the count data for plotting
   data = data.frame()
@@ -137,9 +135,6 @@ plotGenes = function(geneList, dds, intgroup, db, title = NULL, plotType = c("bo
 plot_variable_genes = function(rld_obj, annotation_vars = NULL, top = 100, onlyGenes = FALSE, ...) {
 
 
-  require(genefilter)
-  require(RColorBrewer)
-
   stopifnot(inherits(rld_obj, "SummarizedExperiment"))
 
   topVarGenes = head(order(-rowVars(assay(rld_obj))),top)
@@ -177,8 +172,6 @@ plot_variable_genes = function(rld_obj, annotation_vars = NULL, top = 100, onlyG
 #'@export
 plot_de_genes = function(dds, contrast, cutoff = 0.05, ...){
 
-  require(pheatmap)
-  require(RColorBrewer)
 
   if (missing(contrast)){
     stop("The contrast argument is required so the plot can be annotated correctly")
@@ -189,19 +182,21 @@ plot_de_genes = function(dds, contrast, cutoff = 0.05, ...){
   results = results[!(is.na(results$padj)),]
   results = results[results$padj < cutoff, ]
 
-  colour_vars = contrast[2:length(contrast)]
+
+  rld = rlog(dds)
+  mat = assay(rld)[rownames(results),]
+  annotation = as.data.frame(rld@colData)[contrast[1]]
+
+  colour_vars = levels(annotation[[contrast[1]]])
   colours = brewer.pal(9, "Set1")[1:length(colour_vars)]
   names(colours) = colour_vars
   ann_colours = list(colours)
   names(ann_colours) = contrast[1]
-
-  rld = rlog(dds)
-  mat = assay(rld)[rownames(results),]
-  mat = mat - rowMeans(mat)
+  #mat = mat - rowMeans(mat)
   #rownames(mat) = convertIDs(row.names(mat), from = "ENTREZID", "SYMBOL", org.Hs.eg.db)
 
   pheatmap(mat, scale = "row", border_color = NA,
-       annotation = as.data.frame(rld@colData)[contrast[1]],
+       annotation = annotation,
        annotation_colors = ann_colours, ...)
 
 
@@ -213,7 +208,6 @@ plot_de_genes = function(dds, contrast, cutoff = 0.05, ...){
 #' @export
 plotPCA2 = function (x, intgroup = "condition", ntop = 500, returnData = FALSE)
 {
-    require(genefilter)
 
     rv <- rowVars(assay(x))
     select <- order(rv, decreasing = TRUE)[seq_len(min(ntop,
