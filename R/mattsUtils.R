@@ -8,9 +8,7 @@
 #' @import pheatmap
 #' @import RColorBrewer
 #' @import phyloseq
-#' @import ggvis
 #' @import vegan
-#' @import scales
 #'
 #'
 #' @docType package

@@ -6,6 +6,17 @@
 \usage{
 convertIDs(ids, from, to, db, ifMultiple = c("putNA", "useFirst"))
 }
+\arguments{
+\item{ids}{A vector containing the gene IDs to convert}
+
+\item{from}{Character, convert from}
+
+\item{to}{Character, convert to}
+
+\item{db}{A valid AnnotationDB object}
+
+\item{ifMultiple}{What do if there are mutiple matches when converting}
+}
 \description{
 from \url{http://www.bioconductor.org/help/course-materials/2014/SeattleOct2014/B02.1.1_RNASeqLab.html}
 }

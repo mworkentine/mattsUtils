@@ -16,9 +16,7 @@
 #' @export
 
 plot_diagnositics = function(res, cutoff = 0.05, show_title = TRUE){
-  library(gridExtra)
-  library(ggplot2)
-  library(dplyr)
+
   if(missing(res)){
 		stop("Please provide DESeq results object")
 	}

@@ -4,7 +4,8 @@
 \alias{create_gene_list}
 \title{Create a gene list from a DESeq results object}
 \usage{
-create_gene_list(results, db = NULL, cutoff = 0.05, ncbi_link = FALSE)
+create_gene_list(results, db = NULL, cutoff = 0.05, ncbi_link = FALSE,
+  gene_id = "ENTREZID")
 }
 \arguments{
 \item{results}{DESeq results object}
@@ -14,6 +15,8 @@ create_gene_list(results, db = NULL, cutoff = 0.05, ncbi_link = FALSE)
 \item{cutoff}{Cutoff for the adjusted p-value (or p-value if there is no adjusted). Defaults to 0.05}
 
 \item{ncbi_link}{Logical, include NCBI link in the results. Defaults to FALSE.}
+
+\item{gene_id}{The ID type for the GeneID column in the results object (depends on annotation)}
 }
 \description{
 This is a function that takes a DESeqResults object and a data frame gene list

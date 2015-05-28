@@ -9,9 +9,10 @@
 #' @param db An optional AnnotationDB object for gene identifiers
 #' @param cutoff Cutoff for the adjusted p-value (or p-value if there is no adjusted). Defaults to 0.05
 #' @param ncbi_link Logical, include NCBI link in the results. Defaults to FALSE.
+#' @param gene_id The ID type for the GeneID column in the results object (depends on annotation)
 #' @export
 
-create_gene_list = function(results, db=NULL, cutoff = 0.05, ncbi_link=FALSE){
+create_gene_list = function(results, db=NULL, cutoff = 0.05, ncbi_link=FALSE, gene_id = "ENTREZID"){
 
 
   stopifnot(inherits( results, "DESeqResults" ))
@@ -38,8 +39,8 @@ create_gene_list = function(results, db=NULL, cutoff = 0.05, ncbi_link=FALSE){
   results = as.data.frame(results)
 
   if(ncbi_link){
-    results$Symbol = convertIDs(results$GeneID, "ENTREZID", "SYMBOL", db)
-    results$GeneName = convertIDs(results$GeneID, "ENTREZID", "GENENAME", db)
+    results$Symbol = convertIDs(results$GeneID, gene_id, "SYMBOL", db)
+    results$GeneName = convertIDs(results$GeneID, gene_id, "GENENAME", db)
     results$Link = hwrite(as.character(results$GeneID),
                           link=paste("http://www.ncbi.nlm.nih.gov/gene/",
                                      as.character(results$GeneID), sep=''),
@@ -52,9 +53,14 @@ create_gene_list = function(results, db=NULL, cutoff = 0.05, ncbi_link=FALSE){
 #' Convert between gene IDs
 #'
 #' from \url{http://www.bioconductor.org/help/course-materials/2014/SeattleOct2014/B02.1.1_RNASeqLab.html}
-#'@export
+#' @param ids A vector containing the gene IDs to convert
+#' @param from Character, convert from
+#' @param to Character, convert to
+#' @param db A valid AnnotationDB object
+#' @param ifMultiple What do if there are mutiple matches when converting
+#' @export
 #'
-convertIDs <- function( ids, from, to, db, ifMultiple=c("putNA", "useFirst")) {
+convertIDs <- function(ids, from, to, db, ifMultiple=c("putNA", "useFirst")) {
 
 
   stopifnot( inherits( db, "AnnotationDb" ) )

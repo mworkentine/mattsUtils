@@ -35,11 +35,11 @@ ggvis_taxa_plot = function(physeq, x_axis_var, taxa_level, interactive=FALSE) {
   data_melt = psmelt(physeq)
 
   plot = data_melt %>% group_by_(taxa_level) %>%
-    ggvis(x = x_axis_var, y = ~Abundance, fill = taxa_level) %>%
-    layer_bars()
+    ggvis::ggvis(x = x_axis_var, y = ~Abundance, fill = taxa_level) %>%
+    ggvis::layer_bars()
 
   if (interactive) {
-    plot = plot %>% add_tooltip(all_values, "hover")
+    plot = plot %>% ggvis::add_tooltip(all_values, "hover")
   }
 
   plot
@@ -63,11 +63,11 @@ ggvis_ord_plot = function(physeq, ord_obj, colour, interactive=FALSE){
   y = as.formula(paste0("~", colnames(ord_data)[2]))
   colour = as.formula(paste0("~", as.character(colour)))
 
-  plot = ord_data %>% ggvis(x = x, y = y, strokeWidth := 0, fill = colour) %>%
-    layer_points()
+  plot = ord_data %>% ggvis::ggvis(x = x, y = y, strokeWidth := 0, fill = colour) %>%
+    ggvis::layer_points()
 
   if (interactive) {
-    plot = plot %>% add_tooltip(all_values, "hover")
+    plot = plot %>% ggvis::add_tooltip(all_values, "hover")
   }
 
   plot
