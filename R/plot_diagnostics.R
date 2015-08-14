@@ -34,7 +34,7 @@ plot_diagnositics = function(res, cutoff = 0.05, show_title = TRUE){
     geom_point() + scale_colour_discrete("Cutoff") + xlim(xlims)
   if(show_title){
     title = res@elementMetadata@listData$description[2]
-    grid.arrange(p_hist, volcano, ncol = 2, main = title)
+    grid.arrange(p_hist, volcano, ncol = 2, top = title)
   } else {
     grid.arrange(p_hist, volcano, ncol = 2)
   }
