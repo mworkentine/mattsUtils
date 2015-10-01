@@ -6,7 +6,7 @@ Description: This is a collection of miscellaneous utility functions that are us
 Depends: R (>= 3.1.2)
 License: No license - personal use
 LazyData: true
-Imports: 
+Imports:
     dplyr,
     genefilter,
     ggplot2,
@@ -17,4 +17,5 @@ Imports:
     phyloseq,
     ggvis,
     vegan,
-    scales
+    scales,
+    ggthemr

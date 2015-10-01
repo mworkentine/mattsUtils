@@ -121,6 +121,98 @@ make_ordination_plots = function(physeq, ord_methods = c("NMDS", "PCoA"), distan
 
 
 
+#' Expand ggthemr swatch
+#'
+#' Utility function to interpolate a ggthemr swatch to create more colours. Uses the swatch from the
+#' currently activated theme.
+#'
+#' @param num_cols integer The number of colours you would like to create
+#'
+#' @usage scale_colour_manual(values = expand_swatch(num_cols))
+#'
+#' @return A vector of colours
+#' @export
+expand_swatch = function(num_cols){
+  c(swatch()[1], colorRampPalette(swatch()[-1])(num_cols))
+}
+
+
+#' Get a dataframe with richness estimates
+#'
+#' Wrapper around \code{\link{estimate_richness}} to get an easier to use dataframe
+#' @param physeq A phyloseq object
+#' @param ... Arguments passed to \code{estimate_richness}
+#' @return A dataframe with richness estimates and sample data
+#' @export
+get_richness = function(physeq, ...) {
+  rich = estimate_richness(physeq, ...)
+  rich %<>% add_rownames("SampleID") %>%
+    left_join(sample_data(physeq))
+  return(rich)
+}
+
+
+#' Get significant taxa
+#'
+#' Get significantly differentially abundant taxa from a DESeq results object
+#'
+#' @param res DESeq results object obtained from calling \code{results} on a DESeq object
+#' @param alpha P-value cutoff
+#' @return A dataframe with the significant taxa
+#' @export
+get_sig_taxa = function(res, alpha){
+	if(missing(alpha)){
+		stop("Please provide cutoff value")
+	}
+	if(missing(res)){
+		stop("Please provide DESeq results object")
+	}
+	if(!inherits(res, "DESeqResults")){
+		stop("Not a valid DESeq results object")
+	}
+  sigtab = res[which(res$padj < alpha), ]
+  sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(data_raw)[rownames(sigtab), ], "matrix"))
+  return(sigtab)
+}
+
+
+#' Plot log-fold changes
+#'
+#' Plot log-fold changes for taxa in a data frame that contains DESeq results
+#' Can be used with output of \code{get_sig_taxa}
+#' @param sigs_obj Dataframe with DESeq results
+#' @param order string How to order the plot.  One of "lfc" or "Phylum".  Defaults to "lfc"
+#' @param xtitle string Title of the x-axis. Defaults to "".
+#' @param colour string Variable to colour the points by.  Must be a column in sigs_obj. Defaults to "Phylum"
+#'
+#' @return A ggplot object
+#'
+#' @export
+lfc_plot = function(sigs_obj, order = "lfc", xtitle = "", colour = "Phylum"){
+	if(!("OTU" %in% colnames(sigs_obj))){
+		sigs_obj = sigs_obj %>% add_rownames("OTU")
+		}
+	plot_data = sigs_obj %>%
+		filter(!is.na(Family)) %>%
+		mutate_each(funs(as.character), Phylum, Class, Order, Family, Genus, Species) %>%
+		arrange(desc(Phylum)) %>%
+		mutate(label = paste(Family, Genus, Species, sep = " :: "))
+
+	meanByLabel = plot_data %>% group_by(label) %>% summarise(meanlfc = mean(log2FoldChange))
+
+	if(order == "Phylum"){
+		plot_data = plot_data %>% mutate(label = factor(label, levels = unique(label)))
+	} else {
+		plot_data = plot_data %>%
+			mutate(label = factor(label, levels = meanByLabel$label[order(meanByLabel$meanlfc)]))
+	}
+
+	plot_data %>%
+		ggplot(aes_string(y = "label", x = "log2FoldChange", colour = colour)) +
+			geom_point(size = 3) + geom_vline(x = 0) +
+			theme(axis.text.y = element_text(hjust = 0)) +
+		labs(x = xtitle, y = "")
+}
 
 
 
