@@ -1,10 +1,11 @@
 Package: mattsUtils
 Title: Personal Utility Functions For Various Analysis
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: person("Matthew", "Workentine", , "matthew.workentine@ucalgary.ca", role = c("aut", "cre"))
-Description: This is a collection of miscellaneous utility functions that are used in a variety of different analysis that I do.
+Description: This is a collection of miscellaneous utility functions that are 
+    used in a variety of different analysis that I do.
 Depends: R (>= 3.1.2)
-License: No license - personal use
+License: MIT + file LICENSE
 LazyData: true
 Imports:
     dplyr,
