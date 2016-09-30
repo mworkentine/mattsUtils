@@ -8,14 +8,12 @@ License: No license - personal use
 LazyData: true
 Imports:
     dplyr,
-    genefilter,
     ggplot2,
     gridExtra,
-    hwriter,
     pheatmap,
     RColorBrewer,
     phyloseq,
-    ggvis,
-    vegan,
     scales,
-    ggthemr
+    DESeq2,
+    tibble,
+    biobroom
