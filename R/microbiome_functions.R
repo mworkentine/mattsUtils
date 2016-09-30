@@ -158,9 +158,10 @@ get_richness = function(physeq, ...) {
 #'
 #' @param res DESeq results object obtained from calling \code{results} on a DESeq object
 #' @param alpha P-value cutoff
+#' @param physeq The original phyloseq object
 #' @return A dataframe with the significant taxa
 #' @export
-get_sig_taxa = function(res, alpha){
+get_sig_taxa = function(res, alpha, physeq){
 	if(missing(alpha)){
 		stop("Please provide cutoff value")
 	}
@@ -171,7 +172,7 @@ get_sig_taxa = function(res, alpha){
 		stop("Not a valid DESeq results object")
 	}
   sigtab = res[which(res$padj < alpha), ]
-  sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(data_raw)[rownames(sigtab), ], "matrix"))
+  sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(physeq)[rownames(sigtab), ], "matrix"))
   return(sigtab)
 }
 
