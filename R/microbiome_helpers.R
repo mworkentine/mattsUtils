@@ -10,7 +10,6 @@
 #'
 rlog_norm_otus = function(physeq, remove_negs = FALSE) {
 
-  require(DESeq2); require(phyloseq)
 
   physeq_norm = physeq
   otu_table(physeq_norm) = otu_table(physeq) + 1

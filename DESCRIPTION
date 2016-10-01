@@ -18,5 +18,10 @@ Imports:
     scales,
     DESeq2,
     tibble,
-    biobroom
+    biobroom,
+    graphite,
+    airway,
+    pasilla,
+    hwriter
 RoxygenNote: 5.0.1
+Suggests: testthat

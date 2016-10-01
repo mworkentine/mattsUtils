@@ -9,33 +9,36 @@ single_gene_plot(genes, dds, xaxis, fill, normalized = TRUE,
   "dot"))
 }
 \arguments{
-\item{genes}{character vector of gene identifers that you wish to plot.  ID type must match gene
-ids in the dds object.}
+\item{genes}{character vector of gene identifers that you wish to plot.  ID
+type must match gene ids in the dds object.}
 
-\item{dds}{valid DESeq2 object used to extract the gene expression values.  Uses the
-\code{\link{plotCounts}} function from DESeq2 to extract the expression values.}
+\item{dds}{valid DESeq2 object used to extract the gene expression values.
+Uses the \code{\link{plotCounts}} function from DESeq2 to extract the
+expression values.}
 
-\item{xaxis}{character, name of the sample column to put on the x-axis, must be a column in
-\code{colData(dds)}.}
+\item{xaxis}{character, name of the sample column to put on the x-axis, must
+be a column in \code{colData(dds)}.}
 
-\item{fill}{character, name of the sample column to use for colouring the plot, must be a column
-in \code{colData(dds)}.}
+\item{fill}{character, name of the sample column to use for colouring the
+plot, must be a column in \code{colData(dds)}.}
 
-\item{normalized}{whether the counts should be normalized by size factor (default is TRUE).
-Passed to \code{\link{plotCounts}}}
+\item{normalized}{whether the counts should be normalized by size factor
+(default is TRUE). Passed to \code{\link{plotCounts}}}
 
-\item{transform}{whether to present log2 counts (TRUE) or to present the counts on the log scale
-(FALSE, default).  Passed to \code{\link{plotCounts}}.}
+\item{transform}{whether to present log2 counts (TRUE) or to present the
+counts on the log scale (FALSE, default).  Passed to
+\code{\link{plotCounts}}.}
 
-\item{gene_key}{an optional named list of gene symbols with the gene ids as names.  Used as a
-lookup key to replace gene ids with symbols in the plot}
+\item{gene_key}{an optional named list of gene symbols with the gene ids as
+names.  Used as a lookup key to replace gene ids with symbols in the plot}
 
-\item{palette}{character, name of RColorBrewer palette to use. Default is "Set1"}
+\item{palette}{character, name of RColorBrewer palette to use. Default is
+"Set1"}
 
 \item{type}{character, type of plot to make.  Defaults to boxplot.}
 }
 \description{
-Make a plot of a single gene.  If more genes are provided will facet by gene.  Generally useful
-for less than about 30 genes
+Make a plot of a single gene.  If more genes are provided will facet by gene.
+Generally useful for less than about 30 genes
 }
 
