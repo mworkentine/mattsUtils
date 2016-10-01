@@ -5,7 +5,7 @@
 #'
 #' @param physeq valid phyloseq object
 #' @param remove_negs remove negative values from the normalized OTU table (TRUE). Defaults to FALSE
-#'
+#' @return The original phyloseq object with the normalized OTU table
 #' @export
 #'
 rlog_norm_otus = function(physeq, remove_negs = FALSE) {
@@ -64,7 +64,7 @@ lfc_plot = function(x, tax_level = "Genus", colour = "Phylum", errors = FALSE) {
 #' @param dds valid DESeq2 object
 #' @param physeq valid phyloseq object
 #' @param cutoff pvalue cutoff
-#' @param ... other parameters passed to \code{\line{DESeq2::results}}
+#' @param ... other parameters passed to \code{\link{DESeq2::results}}
 #'
 #' @export
 #'

@@ -2,9 +2,10 @@ Package: mattsUtils
 Title: Personal Utility Functions For Various Analysis
 Version: 0.1.0
 Authors@R: person("Matthew", "Workentine", , "matthew.workentine@ucalgary.ca", role = c("aut", "cre"))
-Description: This is a collection of miscellaneous utility functions that are 
+Description: This is a collection of miscellaneous utility functions that are
     used in a variety of different analysis that I do.
-Depends: R (>= 3.1.2)
+Depends:
+    R (>= 3.1.2)
 License: MIT + file LICENSE
 LazyData: true
 Imports:
@@ -18,3 +19,4 @@ Imports:
     DESeq2,
     tibble,
     biobroom
+RoxygenNote: 5.0.1
