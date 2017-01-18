@@ -4,10 +4,25 @@
 \alias{plot_genus_by_phylum}
 \title{Plot genus by phylum}
 \usage{
-plot_genus_by_phylum(physeq, phylum, filter = NULL, facet_by_fam = FALSE,
-  xlabel = NULL)
+plot_genus_by_phylum(physeq, phylum, x = "Sample", filter = NULL,
+  facet_by_fam = FALSE, xlabel = NULL)
+}
+\arguments{
+\item{physeq}{A valid phyloseq object}
+
+\item{phylum}{character, the phylum to plot}
+
+\item{x}{character, the variable to plot on the x-axis, should be one of
+sample_variables(physeq).  Note that if this is anything other than
+"Samples", the default, the mean abundance for each value will be plotted.}
+
+\item{filter}{numeric, top fraction of abundance to return}
+
+\item{facet_by_fam}{logical, facet by family, default is FALSE}
+
+\item{xlabel}{character, when plotting individual samples the variable to use for labels}
 }
 \description{
-Plot genus by phylum
+Bar plot of all the genera within a specified phylum.
 }
 

@@ -4,7 +4,24 @@
 \alias{plot_bar2}
 \title{Plot bar 2}
 \usage{
-plot_bar2(physeq, rank = "Phylum", x = "Sample", xlabs = NULL)
+plot_bar2(physeq, rank = "Phylum", glom = TRUE, x = "Sample",
+  xlabs = NULL, position = "stack")
+}
+\arguments{
+\item{physeq}{valid phyloseq object}
+
+\item{rank}{character, the taxa rank to plot, must be one of \code{rank_names(physeq)}}
+
+\item{glom}{logical, should the taxa be aggregated at the level of \code{rank}}
+
+\item{x}{character, the sample variable to plot on the x-axis}
+
+\item{xlabs}{character vector, labels to use on the x-axis}
+
+\item{position}{character, for geom_bar}
+}
+\value{
+a ggplot object
 }
 \description{
 An alternate version of \code{\link{phyloseq::plot_bar}}

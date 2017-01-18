@@ -16,6 +16,9 @@ summarize_taxonomy(physeq, grouping_tax = "Phylum", summary_tax = "Genus",
 
 \item{filter}{numeric, filter out members of the summary taxonomy below this fraction}
 }
+\value{
+a data frame
+}
 \description{
 Summarize a specified taxonomy within a higher level, usually phylum
 }

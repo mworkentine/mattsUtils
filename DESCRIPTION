@@ -22,6 +22,8 @@ Imports:
     graphite,
     airway,
     pasilla,
-    hwriter
+    hwriter,
+    ggiraph,
+    stringr
 RoxygenNote: 5.0.1
 Suggests: testthat

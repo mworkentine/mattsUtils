@@ -66,10 +66,12 @@ lfc_plot = function(x, tax_level = "Genus", colour = "Phylum", errors = FALSE) {
 #' @param ... other parameters passed to \code{\link{DESeq2::results}}
 #'
 #' @export
+#' @import biobroom
+#' @import broom
 #'
 get_sig_taxa = function(dds, physeq, cutoff = 0.05, ...) {
 
-  res = results(dds, ...) %>% biobroom::tidy() %>% filter(p.adjusted < cutoff) %>%
+  res = results(dds, ...) %>% tidy() %>% filter(p.adjusted < cutoff) %>%
     dplyr::rename(OTU = gene)
   tax = tax_table(physeq) %>% data.frame() %>% tibble::rownames_to_column("OTU")
 
@@ -89,6 +91,7 @@ get_sig_taxa = function(dds, physeq, cutoff = 0.05, ...) {
 #' @param summary_tax the lower level taxonomy to summarize
 #' @param filter numeric, filter out members of the summary taxonomy below this fraction
 #'
+#' @return a data frame
 #' @export
 #'
 summarize_taxonomy = function(physeq, grouping_tax = "Phylum", summary_tax = "Genus", filter = .01) {
@@ -194,7 +197,7 @@ plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", glom = NULL,
     warning("No taxonomic rank found for the requested labeller")
     p = p + facet_wrap(~OTU, scales = "free_y")
   } else {
-    facet_names = str_replace_na(facet_names, "Unassigned")
+    facet_names = stringr::str_replace_na(facet_names, "Unassigned")
     names(facet_names) = subset_data$OTU
     p = p + facet_wrap(~OTU, scales = "free_y", labeller = labeller(OTU = facet_names))
   }
@@ -206,8 +209,20 @@ plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", glom = NULL,
 
 #' Plot genus by phylum
 #'
+#' Bar plot of all the genera within a specified phylum.
+#'
+#' @param physeq A valid phyloseq object
+#' @param phylum character, the phylum to plot
+#' @param x character, the variable to plot on the x-axis, should be one of
+#'   sample_variables(physeq).  Note that if this is anything other than
+#'   "Samples", the default, the mean abundance for each value will be plotted.
+#' @param filter numeric, top fraction of abundance to return
+#' @param  facet_by_fam logical, facet by family, default is FALSE
+#' @param xlabel character, when plotting individual samples the variable to use for labels
+#'
 #' @export
-plot_genus_by_phylum = function(physeq, phylum, filter = NULL, facet_by_fam = FALSE, xlabel = NULL) {
+plot_genus_by_phylum = function(physeq, phylum, x = "Sample", filter = NULL,
+                                facet_by_fam = FALSE, xlabel = NULL) {
 
 	tax = as.data.frame(tax_table(physeq))
   otus = rownames(tax[tax$Phylum == phylum & !is.na(tax$Phylum), ])
@@ -218,10 +233,18 @@ plot_genus_by_phylum = function(physeq, phylum, filter = NULL, facet_by_fam = FA
 		phylum_physeq = prune_taxa(genefilter_sample(phylum_physeq, topff), phylum_physeq)
 	}
 
+	p_data = phylum_physeq %>% tax_glom("Genus") %>% psmelt()
+
+	if (x != "Sample") {
+	   p_data = p_data %>%
+	     group_by_("Phylum", "Genus", x) %>%
+	     summarise(Abundance = mean(Abundance))
+	}
+
 	gen = get_taxa_unique(phylum_physeq, "Genus")
 	gen_cols  = colorRampPalette(RColorBrewer::brewer.pal(9, "Set1"))(length(gen))
-	p = phylum_physeq %>% tax_glom("Genus") %>% psmelt() %>%
-		ggplot(aes(x = Sample, y = Abundance, fill = Genus)) +
+	p =  p_data %>%
+		ggplot(aes_string(x = x, y = "Abundance", fill = "Genus")) +
 			geom_bar_interactive(aes(tooltip = Genus, data_id = Genus), stat = "identity") +
 			scale_fill_manual(values = gen_cols)
 
@@ -247,10 +270,10 @@ plot_num_seqs = function(physeq) {
 	num_seqs_gg = data_frame(num_seqs = sample_sums(physeq), Sample = names(sample_sums(physeq))) %>%
 		mutate(pretty_num = format(num_seqs, big.mark = ",")) %>%
 		ggplot(aes(x = reorder(Sample, num_seqs), y = num_seqs)) +
-		geom_point_interactive(aes(tooltip = pretty_num, data_id = pretty_num), size = 4) +
+		ggiraph::geom_point_interactive(aes(tooltip = pretty_num, data_id = pretty_num), size = 4) +
 		labs(x = "Sample", y = "Number of sequences") +
 		scale_y_continuous(breaks = seq(0,
-					max(sample_sums(data)) +  0.1*max(sample_sums(data)), by = 10000), labels = scales::comma) +
+					max(sample_sums(physeq)) +  0.1*max(sample_sums(physeq)), by = 10000), labels = scales::comma) +
 		theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 
 	return(num_seqs_gg)
@@ -262,18 +285,33 @@ plot_num_seqs = function(physeq) {
 #'
 #' An alternate version of \code{\link{phyloseq::plot_bar}}
 #'
+#' @param physeq valid phyloseq object
+#' @param rank character, the taxa rank to plot, must be one of \code{rank_names(physeq)}
+#' @param glom logical, should the taxa be aggregated at the level of \code{rank}
+#' @param x character, the sample variable to plot on the x-axis
+#' @param xlabs character vector, labels to use on the x-axis
+#' @param position character, for geom_bar
+#'
+#' @return a ggplot object
 #'
 #' @export
-plot_bar2 = function(physeq, rank = "Phylum", x = "Sample", xlabs = NULL) {
+#'
+plot_bar2 = function(physeq, rank = "Phylum", glom = TRUE, x = "Sample",
+                     xlabs = NULL, position = "stack") {
 
 	levels = phyloseq::get_taxa_unique(physeq, rank)
 	cols  = colorRampPalette(RColorBrewer::brewer.pal(9, "Set1"))(length(levels))
 
-	plot_data = physeq %>% tax_glom(rank) %>% psmelt()
+	if (glom) {
+	  plot_data = physeq %>% tax_glom(rank) %>% psmelt()
+	} else {
+	  plot_data = physeq %>% psmelt()
+	}
 
 	p = plot_data %>%
 		ggplot(aes_string(x = x, y = "Abundance", fill = rank)) +
-		geom_bar_interactive(aes_string(tooltip = rank, data_id = rank), stat = "identity") +
+		ggiraph::geom_bar_interactive(aes_string(tooltip = rank, data_id = rank),
+		                              stat = "identity", position = position) +
 		theme_bw() +
 	 	scale_fill_manual(values = cols) +
 		theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
