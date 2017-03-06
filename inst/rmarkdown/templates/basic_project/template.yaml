@@ -1,4 +1,4 @@
 name: Basic Analysis Project
 description: >
   Template for my own analysis
-create_dir: false
+create_dir: true

@@ -10,4 +10,3 @@ plotPCA2(x, intgroup = "condition", ntop = 500, returnData = FALSE)
 A slight modification from the DESeq function \code{\link[DESeq2]{plotPCA}}
 to return the 3 PC also
 }
-

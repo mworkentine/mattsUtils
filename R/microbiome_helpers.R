@@ -148,13 +148,17 @@ subset_taxa2 = function(physeq, rank, taxa)
 #' @param xaxis character, the sample column to plot on the x-axis
 #' @param fill character, the sample column to use for colouring the boxes
 #' @param labeller character, taxonomy rank to label the OTUs with
+#' @param scales fixed or free scales, passed to facet_wrap
+#' @param palette RColorBrewer palette to use
 #' @param glom character, the taxonomic rank to glom at
 #' @param dds valid DESeq2 object.  If present the normalized count data will be used instead of the raw count value.
 #' @param justDf logical, should just the data be returned instead of plotting
 #'
 #' @export
 #'
-plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", glom = NULL, dds = NULL, justDf = FALSE) {
+plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", scales = "free_y",
+                     palette = "Set1", glom = NULL, dds = NULL, justDf = FALSE)
+  {
 
   if ("all" %in% otus) {
     subset_data = physeq
@@ -187,9 +191,8 @@ plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", glom = NULL,
    p = subset_data %>%
     ggplot(aes_string(x = xaxis, y = "Log_Abundance", fill = fill)) +
       geom_boxplot() +
-      scale_fill_brewer(palette = "Set1") +
-      labs(y = "Log Abundance") +
-      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+      scale_fill_brewer(palette = palette) +
+      labs(y = "Log Abundance")
 
    facet_names = as.character(subset_data[[labeller]])
 
@@ -199,7 +202,7 @@ plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", glom = NULL,
   } else {
     facet_names = stringr::str_replace_na(facet_names, "Unassigned")
     names(facet_names) = subset_data$OTU
-    p = p + facet_wrap(~OTU, scales = "free_y", labeller = labeller(OTU = facet_names))
+    p = p + facet_wrap(~OTU, scales = scales, labeller = labeller(OTU = facet_names))
   }
 
   return(p)

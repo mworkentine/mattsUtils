@@ -25,4 +25,3 @@ for more details on interpreting the p-value histogram.  The volcano plot
 gives you an idea of how many genes are differentially expressed in both
 directions compared to their expression levels.
 }
-

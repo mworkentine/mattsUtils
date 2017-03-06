@@ -18,4 +18,3 @@ get_sig_taxa(dds, physeq, cutoff = 0.05, ...)
 \description{
 Get a list of significant taxa from a DESeq analysis
 }
-

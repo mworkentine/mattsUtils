@@ -17,4 +17,3 @@ A dataframe with richness estimates and sample data
 \description{
 Wrapper around \code{\link{estimate_richness}} to get an easier to use dataframe
 }
-

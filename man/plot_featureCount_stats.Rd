@@ -16,4 +16,3 @@ Takes the count summary data from a \code{\link[Rsubread]{featureCounts}}
 object. Alternitavley you can load the counts.txt.summary file as a dataframe
 and provide this if using the command line version of featureCounts.
 }
-

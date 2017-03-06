@@ -1,36 +1,61 @@
 ---
-title: "Title here"
 output:
   html_document:
     highlight: pygments
-    theme: spacelab
-    toc: yes
-  pdf_document:
-    toc: yes
+    theme: paper
+    code_folding: hide
+    fig_caption: true
+    css: resources/style.css
+    includes:
+      in_header: resources/header.html
+    md_extensions: -markdown_in_html_blocks
+bibliography: references.bib
+csl: plos.cs
 ---
 
+<div class="page-header">
 
+  <img class="center-block" src="resources/UC-vet_med-rgb-400.png" alt="LOGO">
+      
+  <h1>A useful and descriptive title</h1>
 
-```{r knitrOptions, message=FALSE, echo=FALSE}
-library(knitr)
-opts_chunk$set(warning=FALSE, message=FALSE, cache=FALSE, echo=FALSE, fig.width=12, fig.height=8)
+  <address>
+    <strong>Matthew L. Workentine, </strong><a href="mailto:">matthew.workentine@ucalgary.ca</a><br>
+    UCVM Bioinformatics, University of Calgary, Calgary, Alberta<br>
+  </address>
+
+</div>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache = FALSE, 
+         fig.width = 6, fig.height = 4, fig.path = "figures/", dev = c("png", "pdf"))
+```
+```{r}
+library(tidyverse)
+library(mattsUtils)
 ```
 
 
-## Introduction
-Add a description here
 
-## Results
 
-## Discussion
 
-## Methods
+## Section 1
+
+Here is some sample code
+```{r}
+ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point()
+```
+
+## Section 2
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum dictum id purus sed venenatis. Maecenas pellentesque mauris nec magna dapibus, tincidunt mollis lectus placerat. Aenean vehicula semper diam quis interdum. Fusce in sapien a elit consequat egestas. Cras eget arcu ante. Praesent vitae diam nec quam aliquet imperdiet. Suspendisse potenti. Etiam non porta lectus, in pulvinar sapien. Sed volutpat, erat vitae venenatis elementum, nulla orci facilisis mi, ac facilisis sapien libero et nisi.
 
 
 ## Session Info
-Author: Matthew L. Workentine
-Last updated on: `r date()`
-```{r}
-sessionInfo()
+Last updated on: `r date()`  
+
+```{r, echo=TRUE, message=TRUE, collapse=TRUE, comment="", results='markup'}
+devtools::session_info()
 ```
 
+## References

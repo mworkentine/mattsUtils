@@ -27,4 +27,3 @@ Returns a \code{ggplot} object with the plots of interest
 Function to quickly plot a variety of oridation methods Uses
 \code{\link{plot_ordination}} from phyloseq
 }
-

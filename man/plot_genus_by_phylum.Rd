@@ -25,4 +25,3 @@ sample_variables(physeq).  Note that if this is anything other than
 \description{
 Bar plot of all the genera within a specified phylum.
 }
-

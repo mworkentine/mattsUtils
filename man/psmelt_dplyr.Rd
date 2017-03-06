@@ -9,4 +9,3 @@ psmelt_dplyr(physeq)
 \description{
 borrowed from http://chuckpr.github.io/blog/melt.html
 }
-

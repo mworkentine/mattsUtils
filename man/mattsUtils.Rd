@@ -8,4 +8,3 @@
 \description{
 mattsUtils: Convience functions and utilies to help with my analysis
 }
-

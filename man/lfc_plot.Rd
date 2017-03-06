@@ -18,4 +18,3 @@ lfc_plot(x, tax_level = "Genus", colour = "Phylum", errors = FALSE)
 \description{
 Create plot that shows the log-fold change for various taxa
 }
-

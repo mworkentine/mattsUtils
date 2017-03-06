@@ -22,4 +22,3 @@ a data frame
 \description{
 Summarize a specified taxonomy within a higher level, usually phylum
 }
-

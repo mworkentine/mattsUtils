@@ -16,4 +16,3 @@ subset_taxa2(physeq, rank, taxa)
 \description{
 A programming safe version of \code{\link{phyloseq::subset_taxa}}
 }
-

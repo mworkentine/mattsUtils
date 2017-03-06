@@ -9,4 +9,3 @@ veganotu(physeq)
 \description{
 Convert phyloseq otu table to vegan otu table
 }
-

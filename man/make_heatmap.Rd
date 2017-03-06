@@ -22,4 +22,3 @@ Used as a lookup key to replace gene ids with symbols in the plot}
 \description{
 Create a heatmap with the provide list of genes
 }
-

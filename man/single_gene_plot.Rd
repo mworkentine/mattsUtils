@@ -41,4 +41,3 @@ names.  Used as a lookup key to replace gene ids with symbols in the plot}
 Make a plot of a single gene.  If more genes are provided will facet by gene.
 Generally useful for less than about 30 genes
 }
-

@@ -17,4 +17,3 @@ The original phyloseq object with the normalized OTU table
 \description{
 Use the \code{\link{rlog}} function from DESeq2 to normalize an OTU table
 }
-

@@ -4,8 +4,8 @@
 \alias{plot_OTUs}
 \title{Plot OTUs}
 \usage{
-plot_OTUs(physeq, otus, xaxis, fill, labeller = "Genus", glom = NULL,
-  dds = NULL, justDf = FALSE)
+plot_OTUs(physeq, otus, xaxis, fill, labeller = "Genus", scales = "free_y",
+  palette = "Set1", glom = NULL, dds = NULL, justDf = FALSE)
 }
 \arguments{
 \item{physeq}{a valid phyloseq object}
@@ -18,6 +18,10 @@ plot_OTUs(physeq, otus, xaxis, fill, labeller = "Genus", glom = NULL,
 
 \item{labeller}{character, taxonomy rank to label the OTUs with}
 
+\item{scales}{fixed or free scales, passed to facet_wrap}
+
+\item{palette}{RColorBrewer palette to use}
+
 \item{glom}{character, the taxonomic rank to glom at}
 
 \item{dds}{valid DESeq2 object.  If present the normalized count data will be used instead of the raw count value.}
@@ -27,4 +31,3 @@ plot_OTUs(physeq, otus, xaxis, fill, labeller = "Genus", glom = NULL,
 \description{
 Makes a box plot from a list of OTUs
 }
-

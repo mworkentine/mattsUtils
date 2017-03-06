@@ -1,0 +1,21 @@
+
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Raleway', sans-Serif;
+}
+
+p {
+  font-family: 'Tenor Sans', serif;
+  font-size: 14px;
+}
+
+a {
+	color: #9f3a3a; text-decoration: none;
+}
+
+a:hover {
+	color: #792323;
+}
+
+
+

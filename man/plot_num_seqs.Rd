@@ -9,4 +9,3 @@ plot_num_seqs(physeq)
 \description{
 Plot number of sequences
 }
-

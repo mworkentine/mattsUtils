@@ -26,4 +26,3 @@ a ggplot object
 \description{
 An alternate version of \code{\link{phyloseq::plot_bar}}
 }
-
