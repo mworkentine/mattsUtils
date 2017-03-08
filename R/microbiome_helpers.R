@@ -205,6 +205,8 @@ plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", scales = "fr
     p = p + facet_wrap(~OTU, scales = scales, labeller = labeller(OTU = facet_names))
   }
 
+  p = p + theme(strip.background = element_blank())
+
   return(p)
 
 }

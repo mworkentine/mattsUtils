@@ -9,8 +9,8 @@ output:
     includes:
       in_header: resources/header.html
     md_extensions: -markdown_in_html_blocks
-bibliography: references.bib
-csl: plos.cs
+bibliography: resources/references.bib
+csl: resources/plos.csl
 ---
 
 <div class="page-header">
