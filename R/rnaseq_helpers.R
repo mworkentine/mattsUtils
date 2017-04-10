@@ -24,6 +24,10 @@
 #'   "Set1"
 #' @param type character, type of plot to make.  Defaults to boxplot.
 #'
+#' @import DESeq2
+#' @import dplyr
+#' @import tidyr
+#'
 #' @export
 #'
 single_gene_plot = function(genes, dds, xaxis, fill,
@@ -31,19 +35,31 @@ single_gene_plot = function(genes, dds, xaxis, fill,
                             gene_key = NULL,
                             palette = "Set1", type = c("box", "dot")) {
 
-  gene_data = lapply(genes, function(x) {
-    plotCounts(dds, x, c(xaxis, fill), returnData = TRUE,
-               normalized = normalized, transform = transform)
-  })
+  type = match.arg(type)
 
+  # gene_data = lapply(genes, function(x) {
+  #   plotCounts(dds, x, c(xaxis, fill), returnData = TRUE,
+  #              normalized = normalized, transform = transform)
+  # })
+
+  gene_data = counts(dds)[genes, , drop = FALSE] %>%
+    as.data.frame() %>%
+    rownames_to_column("Gene") %>%
+	  gather(Sample, count, -Gene) %>%
+	  left_join(colData(dds) %>% as.data.frame() %>% rownames_to_column("Sample"))
 
   if (!is.null(gene_key)) {
-    names(gene_data) = gene_key[genes]
-  } else {
-    names(gene_data) = genes
-    }
+    gene_data = gene_data %>%
+      mutate(Gene = unname(gene_key[Gene]))
+  }
 
-  gene_data = bind_rows(gene_data, .id = 'Gene')
+  # if (!is.null(gene_key)) {
+  #   names(gene_data) = gene_key[genes]
+  # } else {
+  #   names(gene_data) = genes
+  #   }
+  #
+  # gene_data = bind_rows(gene_data, .id = 'Gene')
 
   if (transform) {
     gene_data = gene_data %>%
@@ -223,7 +239,9 @@ plotPCA2 = function (x, intgroup = "condition", ntop = 500, returnData = FALSE) 
 
 
 
-# compute spia with provided gene list does the bulk of the work for run_spia
+#' compute spia with provided gene list does the bulk of the work for run_spia
+#'
+#' @import graphite
 compute_spia = function(de, all, organism, database, cutoff) {
 
   if (!is.character(names(de)) | !is.character(all)) {
