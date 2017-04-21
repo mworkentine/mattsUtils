@@ -23,6 +23,7 @@
 #' @param palette character, name of RColorBrewer palette to use. Default is
 #'   "Set1"
 #' @param type character, type of plot to make.  Defaults to boxplot.
+#' @param facet_scale character, passed to \code{facet_wrap}.
 #'
 #' @import DESeq2
 #' @import dplyr
@@ -33,7 +34,8 @@
 single_gene_plot = function(genes, dds, xaxis, fill,
                             normalized = TRUE, transform = FALSE,
                             gene_key = NULL,
-                            palette = "Set1", type = c("box", "dot")) {
+                            palette = "Set1", type = c("box", "dot"),
+                            facet_scale = "free_y") {
 
   type = match.arg(type)
 
@@ -70,7 +72,7 @@ single_gene_plot = function(genes, dds, xaxis, fill,
 	  p = ggplot(gene_data, aes_string(x = xaxis, y = "count", fill = fill)) +
   	 geom_boxplot() +
 	   scale_fill_brewer(palette = palette) +
-  	 facet_wrap(~Gene, scales = "free_y")
+  	 facet_wrap(~Gene, scales = facet_scale)
 
 
   } else if (type == "dot") {
@@ -78,7 +80,7 @@ single_gene_plot = function(genes, dds, xaxis, fill,
       geom_point() +
       geom_jitter(width = 0.25, height = 0) +
       scale_colour_brewer(palette = palette) +
-      facet_wrap(~Gene, scales = "free_y")
+      facet_wrap(~Gene, scales = facet_scale)
   } else {
   	stop("Unrecognized plot type")
   }

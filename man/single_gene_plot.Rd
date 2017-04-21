@@ -6,7 +6,7 @@
 \usage{
 single_gene_plot(genes, dds, xaxis, fill, normalized = TRUE,
   transform = FALSE, gene_key = NULL, palette = "Set1", type = c("box",
-  "dot"))
+  "dot"), facet_scale = "free_y")
 }
 \arguments{
 \item{genes}{character vector of gene identifers that you wish to plot.  ID
@@ -36,6 +36,8 @@ names.  Used as a lookup key to replace gene ids with symbols in the plot}
 "Set1"}
 
 \item{type}{character, type of plot to make.  Defaults to boxplot.}
+
+\item{facet_scale}{character, passed to \code{facet_wrap}.}
 }
 \description{
 Make a plot of a single gene.  If more genes are provided will facet by gene.
