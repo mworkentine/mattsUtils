@@ -6,7 +6,7 @@
 \usage{
 plot_OTUs(physeq, otus, xaxis, fill, labeller = "Genus", scales = "free_y",
   palette = "Set1", glom = NULL, dds = NULL, justDf = FALSE,
-  y_scale = c("counts", "log_counts", "relative"))
+  y_scale = c("log_counts", "counts", "relative"))
 }
 \arguments{
 \item{physeq}{a valid phyloseq object with raw OTU counts that have not been transformed.}

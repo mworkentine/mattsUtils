@@ -182,7 +182,7 @@ replace_counts = function(physeq, dds) {
 #'
 plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", scales = "free_y",
                      palette = "Set1", glom = NULL, dds = NULL, justDf = FALSE,
-                     y_scale = c("counts", "log_counts", "relative"))
+                     y_scale = c("log_counts", "counts", "relative"))
   {
 
   y_scale = match.arg(y_scale)
@@ -210,10 +210,6 @@ plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", scales = "fr
     names(otus) = otus
   }
 
-  # if (y_scale == "relative") {
-  #   subset_data = transform_sample_counts(subset_data, function(x) x / sum(x))
-  #   y_axis = "Relative Abundance"
-  # }
 
   if (!is.null(glom)) {
     subset_data = tax_glom(subset_data, glom)
@@ -222,28 +218,7 @@ plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", scales = "fr
   subset_data = subset_data %>% psmelt()
 
 
-  #   count_data = lapply(otus, function(x) plotCounts(dds, x, c(xaxis, fill),
-  #                                                 returnData = TRUE, transform = FALSE) %>%
-  #   											tibble::rownames_to_column("Sample")) %>%
-  #     bind_rows(.id = 'OTU')
-  #
-  #   subset_data = subset_data %>% dplyr::select(-Abundance) %>%
-  #    left_join(count_data) %>% dplyr::rename(Abundance = count)
-  #
-  # }
-
-  # if (y_scale == "counts") {
-  #   subset_data = subset_data %>%
-  #     mutate(Abundance = log2(Abundance + 0.5))
-  #   y_axis = "Log Abundance"
-  # } else if (y_scale == "relative") {
-  #   subset_data = subset_data %>%
-  #     group_by(Sample) %>%
-  #     mutate(Abundance = Abundance / sum(Abundance)) %>% ungroup()
-  #   y_axis = "Relative Abundance"
-  # }
-
-   if (justDf) return(subset_data)
+  if (justDf) return(subset_data)
 
    p = subset_data %>%
     ggplot(aes_string(x = xaxis, y = "Abundance", fill = fill)) +
