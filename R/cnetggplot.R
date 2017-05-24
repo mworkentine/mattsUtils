@@ -8,7 +8,7 @@
 #' @param exclude any pathways to exclude from the path
 #'
 #' @import ggraph
-#' @import igraph
+#' @importFrom igraph graph_from_data_frame
 #' @importFrom viridis scale_color_viridis
 #'
 #' @export

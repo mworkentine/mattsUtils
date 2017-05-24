@@ -5,10 +5,11 @@
 \title{Plot OTUs}
 \usage{
 plot_OTUs(physeq, otus, xaxis, fill, labeller = "Genus", scales = "free_y",
-  palette = "Set1", glom = NULL, dds = NULL, justDf = FALSE)
+  palette = "Set1", glom = NULL, dds = NULL, justDf = FALSE,
+  y_scale = c("counts", "log_counts", "relative"))
 }
 \arguments{
-\item{physeq}{a valid phyloseq object}
+\item{physeq}{a valid phyloseq object with raw OTU counts that have not been transformed.}
 
 \item{otus}{a character vector of OTU ids, present in physeq.  Can be "all" to plot all OTUs}
 
@@ -24,9 +25,15 @@ plot_OTUs(physeq, otus, xaxis, fill, labeller = "Genus", scales = "free_y",
 
 \item{glom}{character, the taxonomic rank to glom at}
 
-\item{dds}{valid DESeq2 object.  If present the normalized count data will be used instead of the raw count value.}
+\item{dds}{valid DESeq2 object.  If present the normalized count data will be used instead of the
+raw count value.}
 
 \item{justDf}{logical, should just the data be returned instead of plotting}
+
+\item{y_scale}{character, the abundance scale on the y-axis.  Counts are just the raw OTU counts
+unless a DESeq object is provided with the dds argument, in which case the normalized counts
+will be used.  log_counts will transform the counts by log2 using a pseudcount of +0.5.
+relative will use the relative abundance values instead of counts.}
 }
 \description{
 Makes a box plot from a list of OTUs

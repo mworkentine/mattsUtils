@@ -139,11 +139,30 @@ subset_taxa2 = function(physeq, rank, taxa)
 }
 
 
+#' Replace counts
+#'
+#' Replace OTU counts in a phyloseq object with the normalized counts from a DESeq object containing
+#' the same OTUS
+#'
+#' @export
+#'
+replace_counts = function(physeq, dds) {
+
+  dds_counts = counts(dds, normalized = TRUE)
+  if (!identical(taxa_names(physeq), rownames(dds_counts))) {
+    stop("OTU ids don't match")
+  }
+  otu_table(physeq) = otu_table(dds_counts, taxa_are_rows = TRUE)
+  return(physeq)
+
+}
+
+
 #' Plot OTUs
 #'
 #' Makes a box plot from a list of OTUs
 #'
-#' @param physeq a valid phyloseq object
+#' @param physeq a valid phyloseq object with raw OTU counts that have not been transformed.
 #' @param otus a character vector of OTU ids, present in physeq.  Can be "all" to plot all OTUs
 #' @param xaxis character, the sample column to plot on the x-axis
 #' @param fill character, the sample column to use for colouring the boxes
@@ -151,14 +170,38 @@ subset_taxa2 = function(physeq, rank, taxa)
 #' @param scales fixed or free scales, passed to facet_wrap
 #' @param palette RColorBrewer palette to use
 #' @param glom character, the taxonomic rank to glom at
-#' @param dds valid DESeq2 object.  If present the normalized count data will be used instead of the raw count value.
+#' @param dds valid DESeq2 object.  If present the normalized count data will be used instead of the
+#'   raw count value.
 #' @param justDf logical, should just the data be returned instead of plotting
+#' @param y_scale character, the abundance scale on the y-axis.  Counts are just the raw OTU counts
+#'   unless a DESeq object is provided with the dds argument, in which case the normalized counts
+#'   will be used.  log_counts will transform the counts by log2 using a pseudcount of +0.5.
+#'   relative will use the relative abundance values instead of counts.
 #'
 #' @export
 #'
 plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", scales = "free_y",
-                     palette = "Set1", glom = NULL, dds = NULL, justDf = FALSE)
+                     palette = "Set1", glom = NULL, dds = NULL, justDf = FALSE,
+                     y_scale = c("counts", "log_counts", "relative"))
   {
+
+  y_scale = match.arg(y_scale)
+
+  # replace with normalized counts if dds is present
+  if (!is.null(dds)) {
+    physeq = replace_counts(physeq, dds)
+  }
+
+  # transform to appropriate scale
+  if (y_scale == "relative") {
+    physeq = transform_sample_counts(physeq, function(x) x/sum(x))
+    y_axis_title = "Relative Abundance"
+  } else if (y_scale == "log_counts") {
+    physeq = transform_sample_counts(physeq, function(x) log2(x + 0.5))
+    y_axis_title = "Log2 Abundance"
+  } else {
+    y_axis_title = "Abundance"
+  }
 
   if ("all" %in% otus) {
     subset_data = physeq
@@ -167,32 +210,46 @@ plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", scales = "fr
     names(otus) = otus
   }
 
+  # if (y_scale == "relative") {
+  #   subset_data = transform_sample_counts(subset_data, function(x) x / sum(x))
+  #   y_axis = "Relative Abundance"
+  # }
+
   if (!is.null(glom)) {
     subset_data = tax_glom(subset_data, glom)
   }
 
   subset_data = subset_data %>% psmelt()
 
-  if (!is.null(dds)) {
-    count_data = lapply(otus, function(x) plotCounts(dds, x, c(xaxis, fill), returnData = TRUE) %>%
-    											tibble::rownames_to_column("Sample")) %>%
-      bind_rows(.id = 'OTU')
 
-    subset_data = subset_data %>% dplyr::select(-Abundance) %>%
-     left_join(count_data) %>% dplyr::rename(Abundance = count)
+  #   count_data = lapply(otus, function(x) plotCounts(dds, x, c(xaxis, fill),
+  #                                                 returnData = TRUE, transform = FALSE) %>%
+  #   											tibble::rownames_to_column("Sample")) %>%
+  #     bind_rows(.id = 'OTU')
+  #
+  #   subset_data = subset_data %>% dplyr::select(-Abundance) %>%
+  #    left_join(count_data) %>% dplyr::rename(Abundance = count)
+  #
+  # }
 
-  }
-
-   subset_data  = subset_data %>%
-    mutate(Log_Abundance = log(Abundance + 1))
+  # if (y_scale == "counts") {
+  #   subset_data = subset_data %>%
+  #     mutate(Abundance = log2(Abundance + 0.5))
+  #   y_axis = "Log Abundance"
+  # } else if (y_scale == "relative") {
+  #   subset_data = subset_data %>%
+  #     group_by(Sample) %>%
+  #     mutate(Abundance = Abundance / sum(Abundance)) %>% ungroup()
+  #   y_axis = "Relative Abundance"
+  # }
 
    if (justDf) return(subset_data)
 
    p = subset_data %>%
-    ggplot(aes_string(x = xaxis, y = "Log_Abundance", fill = fill)) +
+    ggplot(aes_string(x = xaxis, y = "Abundance", fill = fill)) +
       geom_boxplot() +
       scale_fill_brewer(palette = palette) +
-      labs(y = "Log Abundance")
+      labs(y = y_axis_title)
 
    facet_names = as.character(subset_data[[labeller]])
 
