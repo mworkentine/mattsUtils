@@ -6,7 +6,8 @@
 \usage{
 plot_OTUs(physeq, otus, xaxis, fill, labeller = "Genus", scales = "free_y",
   palette = "Set1", glom = NULL, dds = NULL, justDf = FALSE,
-  y_scale = c("log_counts", "counts", "relative"))
+  y_scale = c("log_counts", "counts", "relative"), nrow = NULL,
+  ncol = NULL)
 }
 \arguments{
 \item{physeq}{a valid phyloseq object with raw OTU counts that have not been transformed.}
@@ -17,7 +18,9 @@ plot_OTUs(physeq, otus, xaxis, fill, labeller = "Genus", scales = "free_y",
 
 \item{fill}{character, the sample column to use for colouring the boxes}
 
-\item{labeller}{character, taxonomy rank to label the OTUs with}
+\item{labeller}{character, taxonomy rank to label the OTUs with.  Can also be "label" which will
+label with genus if available and family if genus is unassigned.  In this case a prefix for the
+taxonomic rank is addes as well}
 
 \item{scales}{fixed or free scales, passed to facet_wrap}
 
@@ -33,7 +36,9 @@ raw count value.}
 \item{y_scale}{character, the abundance scale on the y-axis.  Counts are just the raw OTU counts
 unless a DESeq object is provided with the dds argument, in which case the normalized counts
 will be used.  log_counts will transform the counts by log2 using a pseudcount of +0.5.
-relative will use the relative abundance values instead of counts.}
+relative will use the relative abundance values instead of counts.
+@param nrow number of facet rows, passed to facet_wrap
+@param ncol same as nrow but for columns}
 }
 \description{
 Makes a box plot from a list of OTUs

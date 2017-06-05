@@ -166,7 +166,9 @@ replace_counts = function(physeq, dds) {
 #' @param otus a character vector of OTU ids, present in physeq.  Can be "all" to plot all OTUs
 #' @param xaxis character, the sample column to plot on the x-axis
 #' @param fill character, the sample column to use for colouring the boxes
-#' @param labeller character, taxonomy rank to label the OTUs with
+#' @param labeller character, taxonomy rank to label the OTUs with.  Can also be "label" which will
+#'   label with genus if available and family if genus is unassigned.  In this case a prefix for the
+#'   taxonomic rank is addes as well
 #' @param scales fixed or free scales, passed to facet_wrap
 #' @param palette RColorBrewer palette to use
 #' @param glom character, the taxonomic rank to glom at
@@ -177,12 +179,15 @@ replace_counts = function(physeq, dds) {
 #'   unless a DESeq object is provided with the dds argument, in which case the normalized counts
 #'   will be used.  log_counts will transform the counts by log2 using a pseudcount of +0.5.
 #'   relative will use the relative abundance values instead of counts.
+#'   @param nrow number of facet rows, passed to facet_wrap
+#'   @param ncol same as nrow but for columns
 #'
+#' @importFrom stringr str_c
 #' @export
 #'
 plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", scales = "free_y",
                      palette = "Set1", glom = NULL, dds = NULL, justDf = FALSE,
-                     y_scale = c("log_counts", "counts", "relative"))
+                     y_scale = c("log_counts", "counts", "relative"), nrow = NULL, ncol = NULL)
   {
 
   y_scale = match.arg(y_scale)
@@ -215,8 +220,15 @@ plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", scales = "fr
     subset_data = tax_glom(subset_data, glom)
   }
 
-  subset_data = subset_data %>% psmelt()
-
+  subset_data = subset_data %>% psmelt() %>%
+    mutate(label = case_when(
+      is.na(Phylum) ~ "Unassigned",
+      is.na(Class) ~ str_c("p:", Phylum),
+      is.na(Order) ~ str_c("c", Class),
+      is.na(Family) ~ str_c("o:", Order),
+      is.na(Genus) ~ str_c("f:", Family),
+      TRUE ~ str_c("g:", Genus)
+    ))
 
   if (justDf) return(subset_data)
 
@@ -234,7 +246,8 @@ plot_OTUs = function(physeq, otus, xaxis, fill, labeller = "Genus", scales = "fr
   } else {
     facet_names = stringr::str_replace_na(facet_names, "Unassigned")
     names(facet_names) = subset_data$OTU
-    p = p + facet_wrap(~OTU, scales = scales, labeller = labeller(OTU = facet_names))
+    p = p + facet_wrap(~OTU, scales = scales, labeller = labeller(OTU = facet_names),
+                       nrow = nrow, ncol = ncol)
   }
 
   p = p + theme(strip.background = element_blank())
