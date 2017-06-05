@@ -20,10 +20,12 @@ Imports:
     tibble,
     biobroom,
     graphite,
-    airway,
-    pasilla,
     hwriter,
     ggiraph,
-    stringr
+    stringr,
+    ggraph
 RoxygenNote: 6.0.1
-Suggests: testthat
+Suggests: 
+    testthat,
+    airway,
+    pasilla,
