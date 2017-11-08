@@ -13,7 +13,8 @@
 #' @param physeq a valid phyloseq object
 #' @param prev_def prevalance definition, the minimum count for an OTU to defined
 #'   as present
-
+#' @export
+#'
 make_prev_df = function(physeq, prev_def) {
   physeq %>% psmelt() %>%
     group_by(Phylum, Genus, OTU) %>%
