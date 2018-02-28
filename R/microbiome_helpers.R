@@ -455,3 +455,20 @@ psmelt_dplyr = function(physeq) {
         left_join(sd)
 }
 
+#' VST Tranform a phyloseq object
+#'
+#' Uses the \code{\link{getVarianceStabilizedData}} function from DESeq2 to vst
+#' transform an OTU table
+#'
+#' @param physeq a phyloseq object where the OTU table is raw counts
+#' @return a phyloseq object with vst normalized OTU table
+#' @export
+vst_transform = function(physeq) {
+  vst = phyloseq_to_deseq2(physeq, ~1) %>%
+    estimateSizeFactors(type = "poscounts") %>%
+    estimateDispersions(fitType = "local") %>%
+    getVarianceStabilizedData()
+  physeq_vst = physeq
+  otu_table(physeq_vst) = otu_table(vst, taxa_are_rows = TRUE)
+  return(physeq_vst)
+}
