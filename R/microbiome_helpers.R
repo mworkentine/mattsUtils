@@ -472,3 +472,38 @@ vst_transform = function(physeq) {
   otu_table(physeq_vst) = otu_table(vst, taxa_are_rows = TRUE)
   return(physeq_vst)
 }
+
+
+#' Add taxonomy label
+#'
+#' add a column to the taxonomy table of a phyloseq object that lists the
+#' lowest rank taxonomy assigned to that OTU along with a prefix indicating
+#' the taxonomic rank.
+#'
+#' Example: g:Pseudomonas
+#'
+#' @param physeq a valid phyloseq object that contains a taxonomy table
+#' @return a phyloseq object with an additional column on the taxonomy
+#'         table called "Taxonomy"
+#' @export
+add_taxonomy_column = function(physeq) {
+  tax_df = as.data.frame(tax_table(physeq)) %>%
+    rownames_to_column("OTU") %>%
+    mutate(Taxonomy =
+      case_when(
+        is.na(Class)  ~ str_c("o:", Phylum),
+        is.na(Order)  ~ str_c("o:", Class),
+        is.na(Family)  ~ str_c("o:", Order),
+        is.na(Genus)   ~ str_c("f:", Family),
+        is.na(Species) ~ str_c("g:", Genus),
+        TRUE ~ str_c(Genus, " ", Species)
+      )
+    ) %>%
+    mutate(Taxonomy = str_trunc(Taxonomy, 30))
+
+  tax = as.matrix(tax_df[, -1])
+  rownames(tax) = tax_df$OTU
+  tax_table(physeq) = tax_table(tax)
+
+  return(physeq)
+}
