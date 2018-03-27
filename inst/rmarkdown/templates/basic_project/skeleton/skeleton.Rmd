@@ -3,8 +3,10 @@ output:
   html_document:
     highlight: pygments
     theme: paper
-    code_folding: hide
     fig_caption: true
+    toc: true
+    toc_float: true
+    toc_depth: 3
     css: resources/style.css
     includes:
       in_header: resources/header.html
@@ -17,8 +19,6 @@ csl: resources/plos.csl
 
   <img class="center-block" src="resources/UC-vet_med-rgb-400.png" alt="LOGO">
       
-  <h1>A useful and descriptive title</h1>
-
   <address>
     <strong>Matthew L. Workentine, </strong><a href="mailto:">matthew.workentine@ucalgary.ca</a><br>
     UCVM Bioinformatics, University of Calgary, Calgary, Alberta<br>
@@ -38,17 +38,6 @@ library(mattsUtils)
 
 
 
-
-## Section 1
-
-Here is some sample code
-```{r}
-ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point()
-```
-
-## Section 2
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum dictum id purus sed venenatis. Maecenas pellentesque mauris nec magna dapibus, tincidunt mollis lectus placerat. Aenean vehicula semper diam quis interdum. Fusce in sapien a elit consequat egestas. Cras eget arcu ante. Praesent vitae diam nec quam aliquet imperdiet. Suspendisse potenti. Etiam non porta lectus, in pulvinar sapien. Sed volutpat, erat vitae venenatis elementum, nulla orci facilisis mi, ac facilisis sapien libero et nisi.
 
 
 ## Session Info
