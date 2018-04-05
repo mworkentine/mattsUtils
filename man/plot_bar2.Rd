@@ -5,7 +5,7 @@
 \title{Plot bar 2}
 \usage{
 plot_bar2(physeq, rank = "Phylum", glom = TRUE, x = "Sample",
-  xlabs = NULL, position = "stack")
+  xlabs = NULL, position = "stack", palette = "iwanthue")
 }
 \arguments{
 \item{physeq}{valid phyloseq object}
@@ -19,6 +19,9 @@ plot_bar2(physeq, rank = "Phylum", glom = TRUE, x = "Sample",
 \item{xlabs}{character vector, labels to use on the x-axis}
 
 \item{position}{character, for geom_bar}
+
+\item{palette}{Either a valid RColorBrewer palette or "iwanthue" to generate
+a random palette}
 }
 \value{
 a ggplot object

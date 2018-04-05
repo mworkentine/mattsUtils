@@ -331,6 +331,25 @@ plot_num_seqs = function(physeq) {
 }
 
 
+#' Make colour palettes for taxa
+#'
+#' @param rank Taxonomic rank to use
+#' @param physeq valid phyloseq object
+#' @param palette Either a valid RColorBrewer palette or "iwanthue" to generate
+#'   a random palette
+#' @export
+make_taxa_colours = function(rank, physeq, palette = "iwanthue") {
+  taxa = na.omit(get_taxa_unique(physeq, rank))
+  ncols = length(taxa)
+  if (!palette %in% rownames(RColorBrewer::brewer.pal.info)) {
+    pal = hues::iwanthue(ncols, 0, 360, 40, 70, 50, 95, random = TRUE)
+  } else {
+    palsize = RColorBrewer::brewer.pal.info[palette, "maxcolors"]
+    pal = colorRampPalette(RColorBrewer::brewer.pal(palsize, palette))(ncols)
+  }
+  return(setNames(pal, taxa))
+}
+
 #' Plot bar 2
 #'
 #' An alternate version of \code{\link{phyloseq::plot_bar}}
@@ -341,16 +360,17 @@ plot_num_seqs = function(physeq) {
 #' @param x character, the sample variable to plot on the x-axis
 #' @param xlabs character vector, labels to use on the x-axis
 #' @param position character, for geom_bar
+#' @param palette Either a valid RColorBrewer palette or "iwanthue" to generate
+#'   a random palette
 #'
 #' @return a ggplot object
 #'
 #' @export
 #'
 plot_bar2 = function(physeq, rank = "Phylum", glom = TRUE, x = "Sample",
-                     xlabs = NULL, position = "stack") {
+                     xlabs = NULL, position = "stack", palette = "iwanthue") {
 
-	levels = phyloseq::get_taxa_unique(physeq, rank)
-	cols  = colorRampPalette(RColorBrewer::brewer.pal(9, "Set1"))(length(levels))
+	cols = make_taxa_colours(rank, physeq, palette)
 
 	if (glom) {
 	  plot_data = physeq %>% tax_glom(rank) %>% psmelt()
@@ -507,3 +527,21 @@ add_taxonomy_column = function(physeq) {
 
   return(physeq)
 }
+
+
+#' Sequence stats
+#' @export
+get_seq_stats = function(physeq) {
+  return(list(
+    ntaxa = ntaxa(physeq),
+    sum = sum(sample_sums(physeq)),
+    nsamples = nsamples(physeq),
+    median = median(sample_sums(physeq)),
+    sd  = sd(sample_sums(physeq)),
+    min = min(sample_sums(physeq)),
+    max = max(sample_sums(physeq))
+    )
+  )
+}
+
+
