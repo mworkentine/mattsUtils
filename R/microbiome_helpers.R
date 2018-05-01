@@ -494,6 +494,14 @@ vst_transform = function(physeq) {
 }
 
 
+split_species = function(string, n = 2) {
+  splits = str_split(string, "/", n + 1)
+  res = map_if(splits, ~length(.x) > 2, ~.x[1:n]) %>%
+    map_chr(str_c, collapse = "/")
+  return(res)
+}
+
+
 #' Add taxonomy label
 #'
 #' add a column to the taxonomy table of a phyloseq object that lists the
@@ -503,12 +511,14 @@ vst_transform = function(physeq) {
 #' Example: g:Pseudomonas
 #'
 #' @param physeq a valid phyloseq object that contains a taxonomy table
+#' @param num_species the number of species to retain if more than one are identified
 #' @return a phyloseq object with an additional column on the taxonomy
 #'         table called "Taxonomy"
 #' @export
-add_taxonomy_column = function(physeq) {
+add_taxonomy_column = function(physeq, num_species = 2) {
   tax_df = as.data.frame(tax_table(physeq)) %>%
     rownames_to_column("OTU") %>%
+    mutate(Species = split_species(Species, n = num_species)) %>%
     mutate(Taxonomy =
       case_when(
         is.na(Class)  ~ str_c("o:", Phylum),
@@ -518,8 +528,7 @@ add_taxonomy_column = function(physeq) {
         is.na(Species) ~ str_c("g:", Genus),
         TRUE ~ str_c(Genus, " ", Species)
       )
-    ) %>%
-    mutate(Taxonomy = str_trunc(Taxonomy, 30))
+    )
 
   tax = as.matrix(tax_df[, -1])
   rownames(tax) = tax_df$OTU
