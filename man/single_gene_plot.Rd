@@ -5,8 +5,8 @@
 \title{Single Gene Plot}
 \usage{
 single_gene_plot(genes, dds, xaxis, fill, normalized = TRUE,
-  transform = FALSE, gene_key = NULL, palette = "Set1", type = c("box",
-  "dot"), facet_scale = "free_y")
+  transform = FALSE, gene_key = NULL, palette = "Set1",
+  type = c("box", "dot"), facet_scale = "free_y")
 }
 \arguments{
 \item{genes}{character vector of gene identifers that you wish to plot.  ID

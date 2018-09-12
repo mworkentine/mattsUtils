@@ -4,7 +4,7 @@
 \alias{vst_transform}
 \title{VST Tranform a phyloseq object}
 \usage{
-vst_transform(physeq)
+vst_transform(physeq, size_factors = NULL)
 }
 \arguments{
 \item{physeq}{a phyloseq object where the OTU table is raw counts}

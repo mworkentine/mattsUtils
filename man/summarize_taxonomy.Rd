@@ -4,8 +4,8 @@
 \alias{summarize_taxonomy}
 \title{Summarize taxonomy}
 \usage{
-summarize_taxonomy(physeq, grouping_tax = "Phylum", summary_tax = "Genus",
-  filter = 0.01)
+summarize_taxonomy(physeq, grouping_tax = "Phylum",
+  summary_tax = "Genus", filter = 0.01)
 }
 \arguments{
 \item{physeq}{a valid phyloseq object}

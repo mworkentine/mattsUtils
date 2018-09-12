@@ -362,14 +362,17 @@ make_taxa_colours = function(rank, physeq, palette = "iwanthue") {
 #' @param position character, for geom_bar
 #' @param palette Either a valid RColorBrewer palette or "iwanthue" to generate
 #'   a random palette
+#' @param pal_seed Seed for generating palette.  Set to NULL for random
 #'
 #' @return a ggplot object
 #'
 #' @export
 #'
 plot_bar2 = function(physeq, rank = "Phylum", glom = TRUE, x = "Sample",
-                     xlabs = NULL, position = "stack", palette = "iwanthue") {
+                     xlabs = NULL, position = "stack", palette = "iwanthue",
+                     pal_seed = 5858) {
 
+  if (!is.null(pal_seed)) set.seed(pal_seed)
 	cols = make_taxa_colours(rank, physeq, palette)
 
 	if (glom) {
@@ -483,11 +486,16 @@ psmelt_dplyr = function(physeq) {
 #' @param physeq a phyloseq object where the OTU table is raw counts
 #' @return a phyloseq object with vst normalized OTU table
 #' @export
-vst_transform = function(physeq) {
-  vst = phyloseq_to_deseq2(physeq, ~1) %>%
-    estimateSizeFactors(type = "poscounts") %>%
-    estimateDispersions(fitType = "local") %>%
-    getVarianceStabilizedData()
+vst_transform = function(physeq, size_factors = NULL) {
+  vst = phyloseq_to_deseq2(physeq, ~1)
+  if (!is.null(size_factors)) {
+    sizeFactors(vst) = size_factors
+  } else {
+    vst = estimateSizeFactors(vst, type = "poscounts")
+  }
+
+  vst = estimateDispersions(vst, fitType = "local")
+  vst = getVarianceStabilizedData(vst)
   physeq_vst = physeq
   otu_table(physeq_vst) = otu_table(vst, taxa_are_rows = TRUE)
   return(physeq_vst)

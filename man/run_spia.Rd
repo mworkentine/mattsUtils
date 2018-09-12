@@ -4,8 +4,8 @@
 \alias{run_spia}
 \title{Prepare gene lists and run spia}
 \usage{
-run_spia(res, dds, organism, database = c("reactome", "kegg"), key = NULL,
-  cutoff = 0.05)
+run_spia(res, dds, organism, database = c("reactome", "kegg"),
+  key = NULL, cutoff = 0.05)
 }
 \arguments{
 \item{res}{data frame with the columns 'estimate' and 'gene.  Usually DESeq

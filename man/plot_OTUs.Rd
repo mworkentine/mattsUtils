@@ -4,10 +4,10 @@
 \alias{plot_OTUs}
 \title{Plot OTUs}
 \usage{
-plot_OTUs(physeq, otus, xaxis, fill, labeller = "Genus", scales = "free_y",
-  palette = "Set1", glom = NULL, dds = NULL, justDf = FALSE,
-  y_scale = c("log_counts", "counts", "relative"), nrow = NULL,
-  ncol = NULL)
+plot_OTUs(physeq, otus, xaxis, fill, labeller = "Genus",
+  scales = "free_y", palette = "Set1", glom = NULL, dds = NULL,
+  justDf = FALSE, y_scale = c("log_counts", "counts", "relative"),
+  nrow = NULL, ncol = NULL)
 }
 \arguments{
 \item{physeq}{a valid phyloseq object with raw OTU counts that have not been transformed.}

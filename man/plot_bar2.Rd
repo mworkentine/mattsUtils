@@ -5,7 +5,8 @@
 \title{Plot bar 2}
 \usage{
 plot_bar2(physeq, rank = "Phylum", glom = TRUE, x = "Sample",
-  xlabs = NULL, position = "stack", palette = "iwanthue")
+  xlabs = NULL, position = "stack", palette = "iwanthue",
+  pal_seed = 5858)
 }
 \arguments{
 \item{physeq}{valid phyloseq object}
@@ -22,6 +23,8 @@ plot_bar2(physeq, rank = "Phylum", glom = TRUE, x = "Sample",
 
 \item{palette}{Either a valid RColorBrewer palette or "iwanthue" to generate
 a random palette}
+
+\item{pal_seed}{Seed for generating palette.  Set to NULL for random}
 }
 \value{
 a ggplot object
