@@ -53,11 +53,16 @@ prev_filt = function(physeq, prev_def, cutoff) {
 #' Plot the prevalance of each OTU, faceted by phyla
 #'
 #' @inheritParams prev_filt
+#' @param phylum phylum/phyla to subset
 #' @return ggplot object
 #' @export
 #'
-prev_plot = function(physeq, cutoff = 0.10, prev_def = 1) {
-  make_prev_df(physeq, prev_def) %>%
+prev_plot = function(physeq, cutoff = 0.10, prev_def = 1, phylum = NULL) {
+  d = make_prev_df(physeq, prev_def)
+  if (!is.null(phylum)) {
+    d = dplyr::filter(d, Phylum %in% phylum)
+  }
+  d %>%
     ggplot(aes(x = tot, y = prev / nsamples(physeq))) +
       geom_point(aes(colour = Phylum), alpha = 0.6) +
       geom_hline(yintercept = cutoff, alpha = 0.5, linetype = 2) +

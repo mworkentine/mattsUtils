@@ -4,7 +4,7 @@
 \alias{prev_plot}
 \title{Prevelance Plot}
 \usage{
-prev_plot(physeq, cutoff = 0.1, prev_def = 1)
+prev_plot(physeq, cutoff = 0.1, prev_def = 1, phylum = NULL)
 }
 \arguments{
 \item{physeq}{a valid phyloseq object}
@@ -14,6 +14,8 @@ included}
 
 \item{prev_def}{prevalance definition, the minimum count for an OTU to defined
 as present}
+
+\item{phylum}{phylum/phyla to subset}
 }
 \value{
 ggplot object
