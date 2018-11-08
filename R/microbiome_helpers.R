@@ -114,28 +114,25 @@ summarize_taxonomy = function(physeq, grouping_tax = "Phylum", summary_tax = "Ge
 #'
 #' @export
 #'
-subset_taxa2 = function(physeq, rank, taxa)
-{
-    if (is.null(tax_table(physeq))) {
-        cat("Nothing subset. No taxonomyTable in physeq.\n")
-        return(physeq)
-    }
-    else {
-        oldMA <- as(tax_table(physeq), "matrix")
-        oldDF <- data.frame(oldMA)
-        filtDF = oldDF %>% tbl_df() %>% add_rownames("OTU") %>%
-          filter_(interp(~r == taxa , r = as.name(rank)))
-        newDF = filtDF[-1]
-        rownames(newDF) = filtDF$OTU
-        newMA <- as(newDF, "matrix")
-        if (inherits(physeq, "taxonomyTable")) {
-            return(tax_table(newMA))
-        }
-        else {
-            tax_table(physeq) <- tax_table(newMA)
-            return(physeq)
-        }
-    }
+subset_taxa_safe = function(physeq, rank, taxa) {
+	tx = as.data.frame(tax_table(physeq))
+	otus = rownames(tx[tx[[rank]] == taxa, ])
+	phyloseq::prune_taxa(otus, physeq)
+}
+
+#' Subset samples 2
+#'
+#' A programming safe version of \code{\link{phyloseq::subset_samples}}
+#'
+#' @param physeq a valid phyloseq object
+#' @param var variable (column name) of sample data
+#' @param value filter to keep only this value of the variable
+#'
+#' @export
+#'
+subset_samples_safe = function(physeq, var, value) {
+  keeps = rownames(phylseq::sample_data(physeq)[phyloseq::sample_data(physeq)[[var]] == value,])
+  phyloseq::prune_samples(keeps, physeq)
 }
 
 
