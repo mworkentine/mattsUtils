@@ -131,7 +131,7 @@ subset_taxa_safe = function(physeq, rank, taxa) {
 #' @export
 #'
 subset_samples_safe = function(physeq, var, value) {
-  keeps = rownames(phylseq::sample_data(physeq)[phyloseq::sample_data(physeq)[[var]] == value,])
+  keeps = rownames(phyloseq::sample_data(physeq)[phyloseq::sample_data(physeq)[[var]] == value,])
   phyloseq::prune_samples(keeps, physeq)
 }
 
