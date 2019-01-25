@@ -521,7 +521,7 @@ split_species = function(string, n = 2) {
 #'         table called "Taxonomy"
 #' @export
 add_taxonomy_column = function(physeq, num_species = 2) {
-  tax_df = as.data.frame(tax_table(physeq)) %>%
+  tax_df = as.data.frame(tax_table(physeq)@.Data) %>%
     rownames_to_column("OTU") %>%
     mutate(Species = split_species(Species, n = num_species)) %>%
     mutate(Taxonomy =

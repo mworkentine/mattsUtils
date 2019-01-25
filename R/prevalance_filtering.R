@@ -16,7 +16,7 @@
 #' @export
 #'
 make_prev_df = function(physeq, prev_def) {
-  physeq %>% psmelt() %>%
+  physeq %>% tidy_phyloseq() %>%
     group_by(Phylum, Genus, OTU) %>%
     summarise(prev = sum(Abundance >= prev_def), tot = sum(Abundance))
 }

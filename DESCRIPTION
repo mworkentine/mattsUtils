@@ -23,7 +23,12 @@ Imports:
     hwriter,
     ggiraph,
     stringr,
-    ggraph
+    ggraph,
+    rlang,
+    stats,
+    reshape2,
+    scico,
+    magrittr
 RoxygenNote: 6.1.1
 Suggests: 
     testthat,
