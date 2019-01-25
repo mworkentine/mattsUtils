@@ -18,6 +18,8 @@
 #' @importFrom magrittr %>%
 #' @importFrom rlang !!
 #'
+#' @return dataframe with columns ordered
+#'
 #' @export
 cluster_order = function(x, row, column, value,
 												 dist_method = "euclidean", hclust_method = "complete") {
@@ -60,6 +62,8 @@ cluster_order = function(x, row, column, value,
 #' @param dist_method distance method, passed to stats::dist
 #' @param hclust_method hierchical clustering method, passed to stats::hclust
 #' @param scico_pal colour palette to use from the package scico
+#'
+#' @return a ggplot object
 #'
 #' @export
 #'

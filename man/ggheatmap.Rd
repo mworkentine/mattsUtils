@@ -23,6 +23,9 @@ ggheatmap(x, row, column, value, scale = c("row", "column"),
 
 \item{scico_pal}{colour palette to use from the package scico}
 }
+\value{
+a ggplot object
+}
 \description{
 Function to create a ggplot heatmap where the rows and columns are ordered with
 heirarchical clustering, as in a traditional heatmap

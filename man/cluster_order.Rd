@@ -20,6 +20,9 @@ cluster_order(x, row, column, value, dist_method = "euclidean",
 
 \item{hclust_method}{hierchical clustering method, passed to stats::hclust}
 }
+\value{
+dataframe with columns ordered
+}
 \description{
 Order columns in a dataframe by a value using hierchical clustering.  Used primarily when
 making a heatmap style plot so the function takes two columns, one intended to the be rows

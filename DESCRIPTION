@@ -28,7 +28,8 @@ Imports:
     stats,
     reshape2,
     scico,
-    magrittr
+    magrittr,
+    DT
 RoxygenNote: 6.1.1
 Suggests: 
     testthat,
