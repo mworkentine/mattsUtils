@@ -29,7 +29,8 @@ Imports:
     reshape2,
     scico,
     magrittr,
-    DT
+    DT,
+    googledrive
 RoxygenNote: 6.1.1
 Suggests: 
     testthat,
