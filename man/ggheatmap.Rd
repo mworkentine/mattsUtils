@@ -6,7 +6,8 @@
 \usage{
 ggheatmap(x, row, column, value, scale = c("row", "column"),
   filter_empty = TRUE, dist_method = "euclidean",
-  hclust_method = "complete", scico_pal = "vik")
+  hclust_method = "complete", scico_pal = "vik",
+  cell_border = "grey50")
 }
 \arguments{
 \item{x}{dataframe}
@@ -22,6 +23,8 @@ ggheatmap(x, row, column, value, scale = c("row", "column"),
 \item{hclust_method}{hierchical clustering method, passed to stats::hclust}
 
 \item{scico_pal}{colour palette to use from the package scico}
+
+\item{cell_border}{colour for the cell border, use NA to remove border}
 }
 \value{
 a ggplot object

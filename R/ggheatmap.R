@@ -62,13 +62,15 @@ cluster_order = function(x, row, column, value,
 #' @param dist_method distance method, passed to stats::dist
 #' @param hclust_method hierchical clustering method, passed to stats::hclust
 #' @param scico_pal colour palette to use from the package scico
+#' @param cell_border colour for the cell border, use NA to remove border
 #'
 #' @return a ggplot object
 #'
 #' @export
 #'
 ggheatmap = function(x, row, column, value, scale = c("row", "column"), filter_empty = TRUE,
-                     dist_method = "euclidean", hclust_method = "complete", scico_pal = "vik") {
+                     dist_method = "euclidean", hclust_method = "complete", scico_pal = "vik",
+                     cell_border = "grey50") {
 
 	scale = match.arg(scale)
 
@@ -101,6 +103,6 @@ ggheatmap = function(x, row, column, value, scale = c("row", "column"), filter_e
 	pdata %>%
 		cluster_order(!!row, !!column, !!value, dist_method, hclust_method) %>%
 		ggplot2::ggplot(ggplot2::aes(x = !!column, y = !!row, fill = !!value)) +
-		ggplot2::geom_tile(colour = "grey50") +
+		ggplot2::geom_tile(colour = cell_border) +
 		scico::scale_fill_scico(palette = scico_pal, limits = c(-top, top))
 }

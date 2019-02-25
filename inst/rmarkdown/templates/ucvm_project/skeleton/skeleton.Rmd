@@ -1,23 +1,29 @@
 ---
+title: "Untitled"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+bibliography: resources/references.bib
+csl: resources/plos.csl
 output:
   html_document:
-    highlight: pygments
-    theme: paper
-    fig_caption: true
-    toc: true
-    toc_float: true
-    toc_depth: 3
+    code_folding: hide
     css: resources/style.css
+    fig_caption: yes
+    highlight: pygments
     includes:
       in_header: resources/header.html
     md_extensions: -markdown_in_html_blocks
-bibliography: resources/references.bib
-csl: resources/plos.csl
+    theme: paper
+    toc: true
+    toc_float: 
+      collapsed: false
+    toc_depth: 4
+editor_options: 
+  chunk_output_type: console
 ---
 
 <div class="page-header">
 
-  <img class="center-block" src="resources/UC-vet_med-rgb-400.png" alt="LOGO">
+  <img class="float-left" src="resources/UC-vet_med-rgb-400.png" alt="LOGO">
       
   <address>
     <strong>Matthew L. Workentine, </strong><a href="mailto:">matthew.workentine@ucalgary.ca</a><br>
